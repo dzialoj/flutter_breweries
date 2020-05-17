@@ -30,7 +30,7 @@ class Brewery {
     this.websiteUrl,
   );
   @override
-  toString() => 'Brewery: $latitude';
+  toString() => 'Brewery: $name';
   
   factory Brewery.fromJson(Map<String, dynamic> json) {
     return new Brewery(
@@ -59,7 +59,6 @@ class Brewery {
     final responseJson = json.decode(response.body);
     final items =
         (responseJson as List).map((i) => new Brewery.fromJson(i)).toList();
-    print(items);
     return items;
   }
 }

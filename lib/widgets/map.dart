@@ -37,7 +37,7 @@ class MapState extends State<Map> {
                 child: new Icon(
               Icons.person_pin,
               color: Colors.pink,
-              size: 80,
+              size: 50,
             )));
     markers.add(userMarker);
 
@@ -49,10 +49,23 @@ class MapState extends State<Map> {
             double.parse(brewery.longitude),
           ),
           builder: (ctx) => new Container(
-            child: new Icon(
-              Icons.local_drink,
+            width: 50,
+            height: 50,
+            child: new IconButton(
+              icon: Icon(Icons.local_drink),
+              iconSize: 30.0,
               color: Colors.pink,
-              size: 80,
+              focusColor: Colors.pinkAccent,
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (builder) {
+                      return Container(
+                        color: Colors.pink,
+                        child: new Center(child: Text(brewery.street)),
+                      );
+                    });
+              },
             ),
           ),
         );
