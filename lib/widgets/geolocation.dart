@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:beer/widgets/map.dart';
 import 'package:loading/loading.dart';
-import 'package:http/http.dart' as http;
 import 'package:beer/interfaces/Brewery.dart';
 
 class Geolocation extends StatefulWidget {
@@ -15,7 +14,7 @@ class GeolocationState extends State<Geolocation> {
   Geolocator geolocator = new Geolocator();
   //for map widget
   Position currentLatitudeLongitude;
-  var breweriesNearUser;
+  List<Brewery> breweries;
   //for get breweries
   String currentAddress;
   String currentCity;
@@ -43,10 +42,17 @@ class GeolocationState extends State<Geolocation> {
       body: Stack(
         children: <Widget>[
           Center(
-            child: currentLatitudeLongitude != null
+            child: currentLatitudeLongitude != null &&
+                    currentCity != null &&
+                    currentState != null &&
+                    breweries != null
                 ? Map(
                     latitude: currentLatitudeLongitude.latitude,
-                    longitude: currentLatitudeLongitude.longitude)
+                    longitude: currentLatitudeLongitude.longitude,
+                    city: currentCity,
+                    state: currentState,
+                    breweries: breweries,
+                  )
                 : Loading(
                     color: Colors.pink,
                     size: 100,
@@ -76,28 +82,22 @@ class GeolocationState extends State<Geolocation> {
   _getCurrentPosition() {
     geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) async {
+        .then((Position position) {
       setState(() {
         currentLatitudeLongitude = position;
       });
-      await _getAddressFromLatLng();
-      await _getLocalBreweries(currentCity, currentState);
+      _getAddressFromLatLng();
     }).catchError((e) {
       print(e);
     });
   }
 
-  // openbrewerydb
   _getLocalBreweries(String city, String state) async {
-    breweriesNearUser = await Brewery.get(city, state);
-    // try {
-    //   var response = await http.get('https://api.openbrewerydb.org/breweries?by_city=san_diego');
-    //   breweriesNearUser = response.body;
-    //   print(breweriesNearUser);
-    // } catch(error) {
-    //   //snackbar/alert
-    //   print(error);
-    // }
+    await Brewery.get(city, state).then((res) {
+      setState(() {
+        breweries = res;
+      });
+    });
   }
 
   _getAddressFromLatLng() async {
@@ -111,6 +111,7 @@ class GeolocationState extends State<Geolocation> {
         currentCity = place.locality;
         currentState = place.administrativeArea;
       });
+      await _getLocalBreweries(currentCity, currentState);
     } catch (e) {
       print(e);
     }
