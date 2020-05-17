@@ -27,14 +27,10 @@ class MapState extends State<Map> {
   //pin drops for each local brewery
   //on pin click, bottom dialog with information
   //loop throuhg list of found locations, markerlayeroptions for each one
-  @override
-  void initState() {
-    super.initState();
-  }
 
   _generateMapMarkers() {
-    List<Marker> markers = [];
-    
+    List<Marker> markers = List<Marker>();
+
     var userMarker = new Marker(
         point: new LatLng(widget.latitude, widget.longitude),
         builder: (ctx) => new Container(
@@ -46,20 +42,22 @@ class MapState extends State<Map> {
     markers.add(userMarker);
 
     for (var brewery in widget.breweries) {
-      var newMarker = new Marker(
-        point: new LatLng(
-          double.parse(brewery.latitude),
-          double.parse(brewery.longitude),
-        ),
-        builder: (ctx) => new Container(
-          child: new Icon(
-            Icons.local_drink,
-            color: Colors.pink,
-            size: 80,
+      if (brewery.latitude != null || brewery.longitude != null) {
+        var newMarker = new Marker(
+          point: new LatLng(
+            double.parse(brewery.latitude),
+            double.parse(brewery.longitude),
           ),
-        ),
-      );
-      markers.add(newMarker);
+          builder: (ctx) => new Container(
+            child: new Icon(
+              Icons.local_drink,
+              color: Colors.pink,
+              size: 80,
+            ),
+          ),
+        );
+        markers.add(newMarker);
+      }
     }
     return markers;
   }
