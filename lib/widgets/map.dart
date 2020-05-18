@@ -43,6 +43,9 @@ class MapState extends State<Map> {
 
     for (var brewery in widget.breweries) {
       if (brewery.latitude != null || brewery.longitude != null) {
+        String address = "${brewery.street}\n\n"
+            "${brewery.city}, ${brewery.state} ${brewery.postalCode}";
+
         var newMarker = new Marker(
           point: new LatLng(
             double.parse(brewery.latitude),
@@ -61,9 +64,140 @@ class MapState extends State<Map> {
                     context: context,
                     builder: (builder) {
                       return Container(
-                        color: Colors.pink,
-                        child: new Center(child: Text(brewery.street)),
-                      );
+                          color: Colors.white,
+                          child: Column(
+                            children: <Widget>[
+                              AppBar(title: Text(brewery.name)),
+                              Container(
+                                alignment: Alignment.topCenter,
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Icon(
+                                        Icons.directions,
+                                        color: Colors.pink,
+                                        size: 50,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        address,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.topCenter,
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Icon(
+                                        Icons.phone,
+                                        color: Colors.pink,
+                                        size: 50,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        brewery.phone != ""
+                                            ? brewery.phone
+                                            : 'None',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.topCenter,
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Icon(
+                                        Icons.link,
+                                        color: Colors.pink,
+                                        size: 50,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        brewery.websiteUrl != ""
+                                            ? brewery.websiteUrl
+                                            : 'None',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.topCenter,
+                                child: Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Icon(
+                                        Icons.local_drink,
+                                        color: Colors.pink,
+                                        size: 50,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        brewery.breweryType != ""
+                                            ? '${brewery.breweryType[0].toUpperCase()}${brewery.breweryType.substring(1, brewery.breweryType.length)}'
+                                            : 'None',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                  child: ButtonTheme(
+                                    minWidth: 200,
+                                    child: RaisedButton(
+                                      child: Text('Beer'),
+                                      color: Colors.pink,
+                                      textColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(25.0)),
+                                      onPressed: () => {print('beer view')},
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ));
                     });
               },
             ),

@@ -66,6 +66,7 @@ class GeolocationState extends State<Geolocation> {
               child: RaisedButton(
                 child: Text('Refresh'),
                 color: Colors.pink,
+                textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(25.0)),
                 onPressed: () => {
