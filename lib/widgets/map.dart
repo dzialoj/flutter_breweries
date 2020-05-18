@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Map extends StatefulWidget {
   Map(
@@ -27,6 +28,45 @@ class MapState extends State<Map> {
   //pin drops for each local brewery
   //on pin click, bottom dialog with information
   //loop throuhg list of found locations, markerlayeroptions for each one
+
+  //distance from you | business hours
+  _launchUrl(url) async {
+    try{
+      if(await canLaunch(url)) {
+        await(launch(url, forceWebView: true));
+      } else {
+        throw 'Could not launch url.';
+      }
+    } catch(error) {
+      print(error);
+    }
+  }
+
+  _launchPhoneCall(tel) async {
+    try {
+      if(await canLaunch(tel) && tel != "tel:") {
+        await(launch(tel));
+      } else {
+        showDialog(
+          context: context,
+          child: AlertDialog(
+            backgroundColor: Colors.pink,
+            content: Text(
+              'No number available.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              )
+              ),
+          )
+        );
+        throw 'Could not call number.';
+      }
+    } catch(error) {
+      print(error);
+    }
+  }
 
   _generateMapMarkers() {
     List<Marker> markers = List<Marker>();
@@ -100,10 +140,13 @@ class MapState extends State<Map> {
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.all(12),
-                                      child: Icon(
-                                        Icons.phone,
+                                      child: IconButton(
+                                        icon: Icon(Icons.phone),
                                         color: Colors.pink,
-                                        size: 50,
+                                        iconSize: 50,
+                                        onPressed: () => {
+                                          _launchPhoneCall('tel:${brewery.phone}')
+                                        },
                                       ),
                                     ),
                                     Padding(
@@ -128,10 +171,13 @@ class MapState extends State<Map> {
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.all(12),
-                                      child: Icon(
-                                        Icons.link,
+                                      child: IconButton(
+                                        icon: Icon(Icons.link),
                                         color: Colors.pink,
-                                        size: 50,
+                                        iconSize: 50,
+                                        onPressed: () => {
+                                          _launchUrl(brewery.websiteUrl)
+                                        },
                                       ),
                                     ),
                                     Padding(
@@ -185,7 +231,7 @@ class MapState extends State<Map> {
                                   child: ButtonTheme(
                                     minWidth: 200,
                                     child: RaisedButton(
-                                      child: Text('Beer'),
+                                      child: Text('Browse Beer'),
                                       color: Colors.pink,
                                       textColor: Colors.white,
                                       shape: RoundedRectangleBorder(
