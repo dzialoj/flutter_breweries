@@ -16,7 +16,7 @@ class NavigationBarState extends State<NavigationBar>
 
   var buttonList = [
     {"icon": Icons.map, "view": Geolocation()},
-    {"icon": Icons.list, "view": null},
+    {"icon": Icons.photo, "view": null},
     {"icon": Icons.search, "view": null}
   ];
 

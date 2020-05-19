@@ -29,57 +29,86 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
+//could be generated off followers and random users in the area.
+  _generateFeedCards() {
+    List<Widget> cards = [];
+
+    for (var i = 0; i < 10; i++) {
+      var newCard = Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Card(
+          elevation: 5.0,
+          semanticContainer: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          color: Colors.pink,
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    alignment: Alignment.topLeft,
+                    child: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('https://i.pravatar.cc/300'),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Username2020',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Image(
+                fit: BoxFit.fitHeight,
+                image: NetworkImage('https://picsum.photos/400/200'),
+              ),
+              ButtonBar(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.thumb_up),
+                    iconSize: 20,
+                    color: Colors.white,
+                    onPressed: () => {print('dddd')},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.thumb_down),
+                    iconSize: 20,
+                    color: Colors.white,
+                    onPressed: () => {print('dddd')},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_drop_down),
+                    iconSize: 20,
+                    color: Colors.white,
+                    onPressed: () => {print('dddd')},
+                  )
+                ],
+              )
+            ],
+          ),
+          borderOnForeground: true,
+        ),
+      );
+
+      cards.add(newCard);
+    }
+    return cards;
+  }
+
   @override
   Widget build(BuildContext context) {
     controller.forward();
     return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Card(
-              elevation: 5.0,
-              semanticContainer: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              color: Colors.pink,
-              child: Column(
-                children: <Widget>[
-                  Image(
-                    fit: BoxFit.fitHeight,
-                    image: NetworkImage('https://picsum.photos/400/300'),
-                  ),
-                  ButtonBar(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.thumb_up),
-                        iconSize: 30,
-                        color: Colors.white,
-                        onPressed: () => {print('dddd')},
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.thumb_down),
-                        iconSize: 30,
-                        color: Colors.white,
-                        onPressed: () => {print('dddd')},
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.arrow_forward),
-                        iconSize: 30,
-                        color: Colors.white,
-                        onPressed: () => {print('dddd')},
-                      )
-                    ],
-                  )
-                ],
-              ),
-              borderOnForeground: true,
-            ),
-          ),
-        ],
-      ),
+      child: ListView(shrinkWrap: true, children: _generateFeedCards()),
     );
   }
 }

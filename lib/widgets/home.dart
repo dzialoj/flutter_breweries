@@ -11,15 +11,23 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         elevation: 5,
+        actions: <Widget>[
+          Padding(
+          padding: EdgeInsets.all(7.0),
+          child:CircleAvatar(
+            backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+          ),
+          ),
+        ],
       ),
       body: NavigationBar(),
     );
   }
 }
+
