@@ -1,3 +1,4 @@
+import 'package:beer/widgets/daily.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/widgets/geolocation.dart';
 
@@ -33,6 +34,7 @@ class NavigationBarState extends State<NavigationBar>
     Color backgroundColor = Theme.of(context).cardColor;
     Color foregroundColor = Theme.of(context).accentColor;
     return new Scaffold(
+      body: Daily(),
       floatingActionButton: new Column(
         mainAxisSize: MainAxisSize.min,
         children: new List.generate(buttonList.length, (int index) {

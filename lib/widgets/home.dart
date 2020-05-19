@@ -19,7 +19,7 @@ class HomeState extends State<Home> {
         title: Text(widget.title),
         elevation: 5,
       ),
-      body: NavigationBar()
+      body: NavigationBar(),
     );
   }
 }
