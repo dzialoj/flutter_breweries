@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //widgets
-import 'package:beer/widgets/home.dart';
+import 'package:beer/widgets/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
@@ -18,9 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.pink,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(title: 'Home'),
-      
+      home: Login(),
     );
   }
 }
-
