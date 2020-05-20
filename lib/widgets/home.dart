@@ -19,10 +19,22 @@ class HomeState extends State<Home> {
         elevation: 5,
         actions: <Widget>[
           Padding(
-          padding: EdgeInsets.all(7.0),
-          child:CircleAvatar(
-            backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
-          ),
+            padding: EdgeInsets.all(7.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+              child: DropdownButton(
+                items: <String>['Profile','Logout']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String value) {
+                  print(value);
+                },
+              ),
+            ),
           ),
         ],
       ),
@@ -30,4 +42,3 @@ class HomeState extends State<Home> {
     );
   }
 }
-
