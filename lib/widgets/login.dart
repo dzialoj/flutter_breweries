@@ -27,10 +27,7 @@ class LoginState extends State<Login> {
               child: Center(
                 child: Icon(
                   Icons.local_drink,
-<<<<<<< HEAD
                   color: appColor,
-=======
->>>>>>> 6bbd995365cf1f2e7691153123e96702335dcb87
                   size: 50.0,
                 ),
               ),
@@ -44,10 +41,7 @@ class LoginState extends State<Login> {
                       "EMAIL",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-<<<<<<< HEAD
                         color: appColor,
-=======
->>>>>>> 6bbd995365cf1f2e7691153123e96702335dcb87
                         fontSize: 15.0,
                       ),
                     ),
@@ -74,11 +68,7 @@ class LoginState extends State<Login> {
                       obscureText: true,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-<<<<<<< HEAD
                         color: appColor,
-=======
-                        color: Colors.white,
->>>>>>> 6bbd995365cf1f2e7691153123e96702335dcb87
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -102,10 +92,7 @@ class LoginState extends State<Login> {
                       "PASSWORD",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-<<<<<<< HEAD
                         color: appColor,
-=======
->>>>>>> 6bbd995365cf1f2e7691153123e96702335dcb87
                         fontSize: 15.0,
                       ),
                     ),
@@ -157,10 +144,7 @@ class LoginState extends State<Login> {
                       "Forgot Password?",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-<<<<<<< HEAD
                         color: appColor,
-=======
->>>>>>> 6bbd995365cf1f2e7691153123e96702335dcb87
                         fontSize: 15.0,
                       ),
                       textAlign: TextAlign.end,
