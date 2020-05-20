@@ -1,3 +1,4 @@
+import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/widgets/home.dart';
 
@@ -17,7 +18,7 @@ class LoginState extends State<Login> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: appBackgroundColor,
         ),
         child: new Column(
           children: <Widget>[
@@ -26,7 +27,7 @@ class LoginState extends State<Login> {
               child: Center(
                 child: Icon(
                   Icons.local_drink,
-                  color: Colors.pink,
+                  color: appColor,
                   size: 50.0,
                 ),
               ),
@@ -40,7 +41,7 @@ class LoginState extends State<Login> {
                       "EMAIL",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: appColor,
                         fontSize: 15.0,
                       ),
                     ),
@@ -54,8 +55,7 @@ class LoginState extends State<Login> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: Colors.pink, width: 0.5, style: BorderStyle.solid),
+                  bottom: BorderSide(width: 0.5, style: BorderStyle.solid),
                 ),
               ),
               padding: const EdgeInsets.only(left: 0.0, right: 10.0),
@@ -67,7 +67,9 @@ class LoginState extends State<Login> {
                     child: TextField(
                       obscureText: true,
                       textAlign: TextAlign.left,
-                      style: TextStyle(color: Colors.pink),
+                      style: TextStyle(
+                        color: appColor,
+                      ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'youremail@provider.com',
@@ -90,7 +92,7 @@ class LoginState extends State<Login> {
                       "PASSWORD",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: appColor,
                         fontSize: 15.0,
                       ),
                     ),
@@ -104,8 +106,7 @@ class LoginState extends State<Login> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: Colors.pink, width: 0.5, style: BorderStyle.solid),
+                  bottom: BorderSide(width: 0.5, style: BorderStyle.solid),
                 ),
               ),
               padding: const EdgeInsets.only(left: 0.0, right: 10.0),
@@ -117,7 +118,9 @@ class LoginState extends State<Login> {
                     child: TextField(
                       obscureText: true,
                       textAlign: TextAlign.left,
-                      style: TextStyle(color: Colors.pink),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: '*********',
@@ -141,7 +144,7 @@ class LoginState extends State<Login> {
                       "Forgot Password?",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.pink,
+                        color: appColor,
                         fontSize: 15.0,
                       ),
                       textAlign: TextAlign.end,
@@ -159,14 +162,15 @@ class LoginState extends State<Login> {
                 children: <Widget>[
                   new Expanded(
                     child: new FlatButton(
+                      color: appColor,
                       shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0),
                       ),
-                      color: Colors.pink,
                       onPressed: () => {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
+                            //login logic
                             builder: (context) => Home(title: 'Home'),
                           ),
                         )

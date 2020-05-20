@@ -1,3 +1,4 @@
+import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class Daily extends StatefulWidget {
@@ -37,12 +38,12 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
       var newCard = Padding(
         padding: EdgeInsets.all(10.0),
         child: Card(
+          color: appColor,
           elevation: 5.0,
           semanticContainer: true,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
-          color: Colors.pink,
           child: Column(
             children: <Widget>[
               Row(

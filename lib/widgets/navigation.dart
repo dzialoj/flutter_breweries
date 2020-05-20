@@ -1,7 +1,6 @@
 import 'package:beer/widgets/daily.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/widgets/geolocation.dart';
-
 import 'dart:math' as math;
 
 class NavigationBar extends StatefulWidget {
