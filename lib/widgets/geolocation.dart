@@ -1,3 +1,4 @@
+import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:beer/widgets/map.dart';
@@ -54,8 +55,8 @@ class GeolocationState extends State<Geolocation> {
                     breweries: breweries,
                   )
                 : Loading(
-                    color: Colors.pink,
                     size: 100,
+                    color: appColor,
                   ),
           ),
           Container(
@@ -65,7 +66,6 @@ class GeolocationState extends State<Geolocation> {
               minWidth: 200,
               child: RaisedButton(
                 child: Text('Refresh'),
-                color: Colors.pink,
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(25.0)),

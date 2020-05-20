@@ -1,4 +1,5 @@
 import 'package:beer/interfaces/Brewery.dart';
+import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -31,39 +32,36 @@ class MapState extends State<Map> {
 
   //distance from you | business hours
   _launchUrl(url) async {
-    try{
-      if(await canLaunch(url)) {
-        await(launch(url, forceWebView: true));
+    try {
+      if (await canLaunch(url)) {
+        await (launch(url, forceWebView: true));
       } else {
         throw 'Could not launch url.';
       }
-    } catch(error) {
+    } catch (error) {
       print(error);
     }
   }
 
   _launchPhoneCall(tel) async {
     try {
-      if(await canLaunch(tel) && tel != "tel:") {
-        await(launch(tel));
+      if (await canLaunch(tel) && tel != "tel:") {
+        await (launch(tel));
       } else {
         showDialog(
-          context: context,
-          child: AlertDialog(
-            backgroundColor: Colors.pink,
-            content: Text(
-              'No number available.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              )
-              ),
-          )
-        );
+            context: context,
+            child: AlertDialog(
+              backgroundColor: appColor,
+              content: Text('No number available.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ));
         throw 'Could not call number.';
       }
-    } catch(error) {
+    } catch (error) {
       print(error);
     }
   }
@@ -76,7 +74,7 @@ class MapState extends State<Map> {
         builder: (ctx) => new Container(
                 child: new Icon(
               Icons.person_pin,
-              color: Colors.pink,
+              color: appColor,
               size: 50,
             )));
     markers.add(userMarker);
@@ -96,8 +94,8 @@ class MapState extends State<Map> {
             height: 50,
             child: new IconButton(
               icon: Icon(Icons.local_drink),
+              color: appColor,
               iconSize: 30.0,
-              color: Colors.pink,
               focusColor: Colors.pinkAccent,
               onPressed: () {
                 showModalBottomSheet(
@@ -116,7 +114,7 @@ class MapState extends State<Map> {
                                       padding: EdgeInsets.all(12),
                                       child: Icon(
                                         Icons.directions,
-                                        color: Colors.pink,
+                                        color: appColor,
                                         size: 50,
                                       ),
                                     ),
@@ -142,10 +140,11 @@ class MapState extends State<Map> {
                                       padding: EdgeInsets.all(12),
                                       child: IconButton(
                                         icon: Icon(Icons.phone),
-                                        color: Colors.pink,
+                                        color: appColor,
                                         iconSize: 50,
                                         onPressed: () => {
-                                          _launchPhoneCall('tel:${brewery.phone}')
+                                          _launchPhoneCall(
+                                              'tel:${brewery.phone}')
                                         },
                                       ),
                                     ),
@@ -173,11 +172,10 @@ class MapState extends State<Map> {
                                       padding: EdgeInsets.all(12),
                                       child: IconButton(
                                         icon: Icon(Icons.link),
-                                        color: Colors.pink,
+                                        color: appColor,
                                         iconSize: 50,
-                                        onPressed: () => {
-                                          _launchUrl(brewery.websiteUrl)
-                                        },
+                                        onPressed: () =>
+                                            {_launchUrl(brewery.websiteUrl)},
                                       ),
                                     ),
                                     Padding(
@@ -204,7 +202,7 @@ class MapState extends State<Map> {
                                       padding: EdgeInsets.all(12),
                                       child: Icon(
                                         Icons.local_drink,
-                                        color: Colors.pink,
+                                        color: appColor,
                                         size: 50,
                                       ),
                                     ),
@@ -232,7 +230,6 @@ class MapState extends State<Map> {
                                     minWidth: 200,
                                     child: RaisedButton(
                                       child: Text('Browse Beer'),
-                                      color: Colors.pink,
                                       textColor: Colors.white,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
