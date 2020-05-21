@@ -62,13 +62,25 @@ class HomeState extends State<Home> {
                             borderRadius: new BorderRadius.circular(25.0),
                           ),
                           onPressed: () => {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                //login logic
-                                builder: (context) => Login(),
-                              ),
-                            )
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                PageRouteBuilder(pageBuilder:
+                                    (BuildContext context, Animation animation,
+                                        Animation secondaryAnimation) {
+                                  return Login();
+                                }, transitionsBuilder: (BuildContext context,
+                                    Animation<double> animation,
+                                    Animation<double> secondaryAnimation,
+                                    Widget child) {
+                                  return new SlideTransition(
+                                    position: new Tween<Offset>(
+                                      begin: const Offset(0.0, 1.0),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                }),
+                                (Route route) => false)
                           },
                         ),
                       ),
