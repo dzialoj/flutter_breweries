@@ -26,7 +26,11 @@ class HomeState extends State<Home> {
                 context: context,
                 child: AlertDialog(
                   backgroundColor: appBackgroundColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                  ),
                   content: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.all(8.0),
