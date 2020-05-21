@@ -9,6 +9,7 @@
 .history
 .svn/
 .env*
+/server/node_modules
 # IntelliJ related
 *.iml
 *.ipr
