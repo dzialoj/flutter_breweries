@@ -31,6 +31,7 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
   }
 
 //could be generated off followers and random users in the area.
+//only local posts / follower posts
   _generateFeedCards() {
     List<Widget> cards = [];
 
