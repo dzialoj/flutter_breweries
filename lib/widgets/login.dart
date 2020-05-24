@@ -3,6 +3,8 @@ import 'package:beer/widgets/home.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/services/http_service.dart';
 import 'package:loading/loading.dart';
+import 'package:beer/widgets/account-management-widgets/create_account.dart';
+
 // import 'package:beer/services/snackbar_service.dart';
 
 class Login extends StatefulWidget {
@@ -68,6 +70,13 @@ class LoginState extends State<Login> {
     }
   }
 
+  _toCreateAccount() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateAccount()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -130,7 +139,6 @@ class LoginState extends State<Login> {
                       children: <Widget>[
                         new Expanded(
                           child: TextField(
-                            obscureText: true,
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: appColor,
@@ -204,6 +212,23 @@ class LoginState extends State<Login> {
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 40.0),
+                        child: new FlatButton(
+                          child: new Text(
+                            "Create Account",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: appColor,
+                              fontSize: 15.0,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
+                          onPressed: () => {
+                            _toCreateAccount()
+                          },
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(right: 20.0),
                         child: new FlatButton(
