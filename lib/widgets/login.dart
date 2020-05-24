@@ -2,6 +2,7 @@ import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/services/http_service.dart';
 import 'package:loading/loading.dart';
+import 'package:beer/services/snackbar_service.dart';
 
 class Login extends StatefulWidget {
   // This widget is the root of your application.
@@ -14,18 +15,20 @@ class LoginState extends State<Login> {
   // TODO: submit
 
   bool loading = false;
-  
+
   _login(username, password) async {
     loading = true;
     try {
       var response = await submitLogin(username, password);
       if(response.statusCode != 201) {
         //snackbar
+        showErrorSnackbar(response.body, context);
         print(response.body);
       } else {
         //snackbar
         //do navigation things
         //set user to current user to get info
+        showSuccessSnackbar('Login Successful!', context);
         print(response.body);
       }
     } catch (error) {
