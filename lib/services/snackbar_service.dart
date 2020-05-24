@@ -1,25 +1,43 @@
 import 'package:flutter/material.dart';
 
-showSuccessSnackbar(String content, context) {
-  Scaffold.of(context).showSnackBar(
-    new SnackBar(
-      content: new Text(
-        content,
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.green,
-    ),
-  );
+class SnackbarService extends StatefulWidget {
+  SnackbarService({Key key, this.content, this.isError}) : super(key: key);
+  final String content;
+  final bool isError;
+  @override
+  SnackbarServiceState createState() => SnackbarServiceState();
 }
 
-showErrorSnackbar(String content, context) {
-  Scaffold.of(context).showSnackBar(
-    new SnackBar(
-      content: new Text(
-        content,
-        style: TextStyle(color: Colors.white),
+class SnackbarServiceState extends State<SnackbarService> {
+  showSuccessSnackbar(String content) {
+    Scaffold.of(context).showSnackBar(
+      new SnackBar(
+        content: new Text(
+          content,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
       ),
-      backgroundColor: Colors.red,
-    ),
-  );
+    );
+  }
+
+  showErrorSnackbar(String content) {
+    Scaffold.of(context).showSnackBar(
+      new SnackBar(
+        content: new Text(
+          content,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: widget.isError
+            ? showErrorSnackbar(widget.content)
+            : showSuccessSnackbar(widget.content));
+  }
 }

@@ -1,8 +1,9 @@
 import 'package:beer/widgets/colors/colors.dart';
+import 'package:beer/widgets/home.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/services/http_service.dart';
 import 'package:loading/loading.dart';
-import 'package:beer/services/snackbar_service.dart';
+// import 'package:beer/services/snackbar_service.dart';
 
 class Login extends StatefulWidget {
   // This widget is the root of your application.
@@ -15,27 +16,54 @@ class LoginState extends State<Login> {
   // TODO: submit
 
   bool loading = false;
-
   _login(username, password) async {
     loading = true;
     try {
       var response = await submitLogin(username, password);
-      if(response.statusCode != 201) {
+      if (response.statusCode != 201) {
         //snackbar
-        showErrorSnackbar(response.body, context);
-        print(response.body);
+        showDialog(
+            context: context,
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              backgroundColor: appColor,
+              content: Text(response.body,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  )),
+            ));
       } else {
         //snackbar
         //do navigation things
         //set user to current user to get info
-        showSuccessSnackbar('Login Successful!', context);
+        Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(pageBuilder: (BuildContext context,
+                Animation animation, Animation secondaryAnimation) {
+              return Home(title: 'Home');
+            }, transitionsBuilder: (BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+                Widget child) {
+              return new SlideTransition(
+                position: new Tween<Offset>(
+                  begin: const Offset(0.0, 1.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            }),
+            (Route route) => false);
         print(response.body);
       }
     } catch (error) {
       //snackbar/dialog service
       print(error);
-    }
-    finally {
+    } finally {
       loading = false;
     }
   }
@@ -44,9 +72,11 @@ class LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: loading
-          ? Loading(
-              size: 100,
-              color: appColor,
+          ? Center(
+              child: Loading(
+                size: 100,
+                color: appColor,
+              ),
             )
           : Container(
               height: MediaQuery.of(context).size.height,
@@ -204,7 +234,8 @@ class LoginState extends State<Login> {
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            onPressed: () => {_login('testuser1@gmail.com', 'test12345')},
+                            onPressed: () =>
+                                {_login('testuser1@gmail.com', 'test12345')},
                             child: new Container(
                               padding: const EdgeInsets.symmetric(
                                 vertical: 20.0,
