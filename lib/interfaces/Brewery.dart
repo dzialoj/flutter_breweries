@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'package:beer/services/http_service.dart';
 import 'package:http/http.dart' as http;
 
 class Brewery {
@@ -54,8 +55,9 @@ class Brewery {
       state = 'south_carolina';
     }
     var url =
-        'https://api.openbrewerydb.org/breweries?by_city=${city}&by_state=${state}';
+        'https://api.openbrewerydb.org/breweries?by_city=$city&by_state=$state';
     var response = await http.get(url);
+   // var response = await fetchLocalBreweries(city,state);
     final responseJson = json.decode(response.body);
     final items =
         (responseJson as List).map((i) => new Brewery.fromJson(i)).toList();

@@ -23,6 +23,19 @@ router.post('/login', (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => { res.send('logout') });
+router.get('/logout', (req, res) => { 
+    try {
+        firebase.auth().signOut();
+    } catch {
+        res.sendStatus(404).send('No account found to logout.');
+    }
+});
+
+//MapBox
+// router.get('/breweries', (req, res) => {
+//     var url =
+//         `https://api.openbrewerydb.org/breweries?by_city=${req.body.city}&by_state=${req.body.state}`;
+    
+// });
 
 module.exports = router

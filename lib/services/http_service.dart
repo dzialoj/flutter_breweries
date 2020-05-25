@@ -12,3 +12,24 @@ Future<dynamic> submitLogin(username, password) async {
     print(error);
   }
 }
+
+Future submitLogout() async {
+  try {
+    var uri = Uri.http('192.168.1.6:3000', '/api/logout');
+    var response = await http.get(uri);
+    print(response.body);
+    return response;
+  } catch(error) {
+    print(error);
+  }
+}
+// Future fetchLocalBreweries(city,state) async {
+//   try {
+//     var uri = Uri.http('192.168.1.6:3000', '/api/breweries');
+//     Map<String,String>  headers = {"Content-Type": "application/json"};
+//     String data = '{"city": "$city", "state": "$state"}';
+//     return await http.get(uri, headers: headers, body: data);
+//   } catch {
+
+//   }
+// }

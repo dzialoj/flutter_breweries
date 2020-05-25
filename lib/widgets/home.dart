@@ -1,3 +1,4 @@
+import 'package:beer/services/http_service.dart';
 import 'package:flutter/material.dart';
 //import 'package:loading/indicator/ball_pulse_indicator.dart';
 //import 'package:loading/loading.dart';
@@ -13,6 +14,28 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  _logout() {
+    submitLogout();
+    Navigator.pushAndRemoveUntil(
+        context,
+        PageRouteBuilder(pageBuilder: (BuildContext context,
+            Animation animation, Animation secondaryAnimation) {
+          return Login();
+        }, transitionsBuilder: (BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child) {
+          return new SlideTransition(
+            position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        }),
+        (Route route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,27 +84,7 @@ class HomeState extends State<Home> {
                           shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                           ),
-                          onPressed: () => {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                PageRouteBuilder(pageBuilder:
-                                    (BuildContext context, Animation animation,
-                                        Animation secondaryAnimation) {
-                                  return Login();
-                                }, transitionsBuilder: (BuildContext context,
-                                    Animation<double> animation,
-                                    Animation<double> secondaryAnimation,
-                                    Widget child) {
-                                  return new SlideTransition(
-                                    position: new Tween<Offset>(
-                                      begin: const Offset(0.0, 1.0),
-                                      end: Offset.zero,
-                                    ).animate(animation),
-                                    child: child,
-                                  );
-                                }),
-                                (Route route) => false)
-                          },
+                          onPressed: () => {_logout()},
                         ),
                       ),
                     ],
