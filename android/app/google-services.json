@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1014860394889",
+    "firebase_url": "https://flutterbeer.firebaseio.com",
+    "project_id": "flutterbeer",
+    "storage_bucket": "flutterbeer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014860394889:android:6a6a97776dac50694e7158",
+        "android_client_info": {
+          "package_name": "com.dzialojonathan.flutterbeer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014860394889-it6e169td7goej7sq7nrhp9s7f8tr6uc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc6yAnXbOC8fDu9Xm4MSxSDplD2WIP69M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014860394889-it6e169td7goej7sq7nrhp9s7f8tr6uc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1014860394889-9mj1ko3fd7agq9kci1p0djqqs6uat12n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dzialojonathan.flutterbeer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

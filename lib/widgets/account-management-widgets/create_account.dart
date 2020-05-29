@@ -41,7 +41,7 @@ class CreateAccountState extends State<CreateAccount> {
       "avatar": _image,
     };
     createAccount(formData).then((res) => {
-      print(res)
+      print(res.body)
     }).catchError((e) => {
       print(e)
     });

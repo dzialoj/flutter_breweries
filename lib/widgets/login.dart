@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:beer/widgets/home.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class LoginState extends State<Login> {
       var response = await submitLogin(username, password);
       if (response.statusCode != 201) {
         //snackbar
+        print(response);
         showDialog(
             context: context,
             child: AlertDialog(
@@ -39,9 +42,28 @@ class LoginState extends State<Login> {
                   )),
             ));
       } else {
-        //snackbar
-        //do navigation things
-        //set user to current user to get info
+        var jsonResponse = json.decode(response.body);
+        var isEmailVerified = jsonResponse["user"]["emailVerified"];
+        if (isEmailVerified == false) {
+          showDialog(
+            context: context,
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              backgroundColor: appColor,
+              content: Text(
+                'Please verify your email address.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+          return;
+        }
         Navigator.pushAndRemoveUntil(
             context,
             PageRouteBuilder(pageBuilder: (BuildContext context,
@@ -60,7 +82,6 @@ class LoginState extends State<Login> {
               );
             }),
             (Route route) => false);
-        print(response.body);
       }
     } catch (error) {
       //snackbar/dialog service
@@ -76,6 +97,9 @@ class LoginState extends State<Login> {
       MaterialPageRoute(builder: (context) => CreateAccount()),
     );
   }
+
+  String _email;
+  String _password;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +172,7 @@ class LoginState extends State<Login> {
                               hintText: 'youremail@provider.com',
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
+                            onChanged: (val) => {_email = val},
                           ),
                         ),
                       ],
@@ -201,6 +226,7 @@ class LoginState extends State<Login> {
                               hintText: '*********',
                               hintStyle: TextStyle(color: Colors.grey),
                             ),
+                            onChanged: (value) => {_password = value},
                           ),
                         ),
                       ],
@@ -224,9 +250,7 @@ class LoginState extends State<Login> {
                             ),
                             textAlign: TextAlign.end,
                           ),
-                          onPressed: () => {
-                            _toCreateAccount()
-                          },
+                          onPressed: () => {_toCreateAccount()},
                         ),
                       ),
                       Padding(
@@ -259,8 +283,7 @@ class LoginState extends State<Login> {
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            onPressed: () =>
-                                {_login('testuser1@gmail.com', 'test12345')},
+                            onPressed: () => {_login(_email, _password)},
                             child: new Container(
                               padding: const EdgeInsets.symmetric(
                                 vertical: 20.0,
