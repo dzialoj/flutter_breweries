@@ -19,7 +19,19 @@ Future submitLogout() async {
     var response = await http.get(uri);
     print(response.body);
     return response;
-  } catch(error) {
+  } catch (error) {
+    print(error);
+  }
+}
+
+Future createAccount(userData) async {
+  try {
+    var uri = Uri.http('192.168.1.6:3000', '/api/createuser');
+    Map<String, String> headers = {"Content-Type": "application/json"};
+    String data =
+        '{"username": "${userData["username"]}","avatar": "${userData["avatar"]}", email": "${userData["email"]}", "password": "${userData["password"]}"}';
+    return await http.post(uri, headers: headers, body: data);
+  } catch (error) {
     print(error);
   }
 }

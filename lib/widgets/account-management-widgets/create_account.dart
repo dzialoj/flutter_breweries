@@ -1,6 +1,7 @@
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:beer/services/http_service.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -13,6 +14,10 @@ class CreateAccount extends StatefulWidget {
 class CreateAccountState extends State<CreateAccount> {
   final _formKey = GlobalKey<FormState>();
   var _image;
+  String _username = '';
+  String _email = '';
+  String _password = '';
+  String _verifyPass = '';
 
   Future _selectUserAvatar() async {
     var image = await ImagePicker.pickImage(
@@ -20,6 +25,25 @@ class CreateAccountState extends State<CreateAccount> {
     );
     setState(() {
       _image = image;
+    });
+  }
+
+  Future submitForm() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+
+    var formData = {
+      "username": _username,
+      "password": _password,
+      "email": _email,
+      "avatar": _image,
+    };
+    createAccount(formData).then((res) => {
+      print(res)
+    }).catchError((e) => {
+      print(e)
     });
   }
 
@@ -46,7 +70,8 @@ class CreateAccountState extends State<CreateAccount> {
                       child: _image == null
                           ? IconButton(
                               icon: Icon(Icons.add_a_photo),
-                              onPressed: () => {_selectUserAvatar()})
+                              onPressed: () => {_selectUserAvatar()},
+                            )
                           : null),
                 ),
               ),
@@ -66,7 +91,7 @@ class CreateAccountState extends State<CreateAccount> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Expanded(
-                    child: TextField(
+                    child: TextFormField(
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: appColor,
@@ -76,6 +101,15 @@ class CreateAccountState extends State<CreateAccount> {
                         hintText: 'Username',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
+                      onSaved: (val) {
+                        _username = val;
+                      },
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return 'Please enter a username.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -96,7 +130,7 @@ class CreateAccountState extends State<CreateAccount> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Expanded(
-                    child: TextField(
+                    child: TextFormField(
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: appColor,
@@ -106,6 +140,18 @@ class CreateAccountState extends State<CreateAccount> {
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
+                      onSaved: (val) {
+                        _email = val;
+                      },
+                      validator: (val) {
+                        var emailRegex = RegExp(
+                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                            .hasMatch(val);
+                        if (!emailRegex || val.isEmpty) {
+                          return 'Please enter a valid email address.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -126,7 +172,7 @@ class CreateAccountState extends State<CreateAccount> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Expanded(
-                    child: TextField(
+                    child: TextFormField(
                       obscureText: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -137,6 +183,9 @@ class CreateAccountState extends State<CreateAccount> {
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
+                      onSaved: (val) {
+                        _password = val;
+                      },
                     ),
                   ),
                 ],
@@ -157,7 +206,7 @@ class CreateAccountState extends State<CreateAccount> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Expanded(
-                    child: TextField(
+                    child: TextFormField(
                       obscureText: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -168,6 +217,15 @@ class CreateAccountState extends State<CreateAccount> {
                         hintText: 'Verify Password',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
+                      onSaved: (val) {
+                        _verifyPass = val;
+                      },
+                      validator: (val) {
+                        if (val != _password) {
+                          return 'Passwords do not match.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -182,7 +240,7 @@ class CreateAccountState extends State<CreateAccount> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0)),
                 child: Text('Create'),
-                onPressed: () => {},
+                onPressed: () => {submitForm()},
               ),
             ),
           ],
