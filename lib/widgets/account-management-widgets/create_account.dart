@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,14 +19,19 @@ class CreateAccountState extends State<CreateAccount> {
   String _username = '';
   String _email = '';
   String _password = '';
-  String _verifyPass = '';
+  String _verifyPass = ''; //fix this validation rule
 
+  var imageForDisplay;
   Future _selectUserAvatar() async {
     var image = await ImagePicker.pickImage(
       source: ImageSource.gallery,
     );
+    imageForDisplay = image;
+    List<int> imageBytes = image.readAsBytesSync();
+    print(imageBytes);
+    var base64Image = base64Encode(imageBytes);
     setState(() {
-      _image = image;
+      _image = base64Image;
     });
   }
 
@@ -40,11 +47,9 @@ class CreateAccountState extends State<CreateAccount> {
       "email": _email,
       "avatar": _image,
     };
-    createAccount(formData).then((res) => {
-      print(res.body)
-    }).catchError((e) => {
-      print(e)
-    });
+    createAccount(formData)
+        .then((res) => {print(res.body)})
+        .catchError((e) => {print(e)});
   }
 
   @override
@@ -66,7 +71,7 @@ class CreateAccountState extends State<CreateAccount> {
                   child: CircleAvatar(
                       radius: 80,
                       backgroundImage:
-                          _image != null ? FileImage(_image) : null,
+                          _image != null ? FileImage(imageForDisplay) : null,
                       child: _image == null
                           ? IconButton(
                               icon: Icon(Icons.add_a_photo),

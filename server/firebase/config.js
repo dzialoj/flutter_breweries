@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '.env' });
 const firebase = require('firebase');
-
+require('firebase/storage');
 var firebaseConfig = {
   // apiKey: process.env.FIREBASE_API_TOKEN,
   apiKey: "AIzaSyDssIAPTBt4_QH_Kx55_-LvLelBd_D9bCk",

@@ -9,7 +9,6 @@ router.get("/ping", (req, res) => {
 // TODO: Logout, Create User (yawn)
 // TODO: Move mapbox to server side
 router.post("/login", (req, res, next) => {
-  console.log(req.body);
   if (req.body) {
     let email = req.body.username;
     let password = req.body.password;
@@ -52,6 +51,17 @@ router.post("/createuser", (req, res) => {
       .createUserWithEmailAndPassword(email, password)
       .then((res) => {
         let user = firebase.auth().currentUser;
+        //avatar
+        const storageRef = firebase.storage().ref(user + "/avatar");
+        storageRef
+          .putString(avatar.substring(23), "base64")
+          .then(() => {
+            console.log("Avatar uploaded!");
+          })
+          .catch((e) => {
+            console.log(e);
+            res.send(e);
+          });
         //user profile
         const profile = { displayName: username, photoUrl: avatar };
         user.updateProfile(profile);
