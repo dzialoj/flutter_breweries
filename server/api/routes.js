@@ -49,31 +49,33 @@ router.post("/createuser", (req, res) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
+      .then((response) => {
         let user = firebase.auth().currentUser;
         //avatar
         const storageRef = firebase.storage().ref(user.uid + "/avatar");
         storageRef
           .put(Buffer.from(avatar,'base64'))
-          .then(() => {
+          .then((snapshot) => {
             console.log("Avatar uploaded!");
+            user.updateProfile({photoURL: snapshot.downloadURL});
           })
           .catch((e) => {
             console.log(e);
             res.send(e);
           });
         //user profile
-        const profile = { displayName: username, photoUrl: storageRef.child(user.uid + '/avatar') };
-        user.updateProfile(profile);
+       // const profile = { displayName: username, photoUrl: storageRef.getDownloadURL() };
+       // user.updateProfile(profile);
+       user.updateProfile({displayName: username});
         //email verification
         user
           .sendEmailVerification()
-          .then((res) => {
-            console.log(res);
+          .then((response) => {
+            console.log(response);
             res.status(200).send("Success, Please verify your email address.");
           })
           .catch((error) => {
-            res.send(error.message);
+            res.send(error);
           });
       })
       .catch((e) => {

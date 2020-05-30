@@ -36,6 +36,16 @@ Future createAccount(userData) async {
     print(error);
   }
 }
+
+Future getCurrentUserFromDb() async {
+  try {
+    var uri = Uri.http('192.168.1.6:3000', '/api/currentUser');
+    return await http.get(uri);
+  } catch(e) {
+    print(e);
+  }
+}
+
 // Future fetchLocalBreweries(city,state) async {
 //   try {
 //     var uri = Uri.http('192.168.1.83:3000', '/api/breweries');

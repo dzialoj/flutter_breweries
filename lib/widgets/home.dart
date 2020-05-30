@@ -14,6 +14,9 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+
+  var currentUserData;
+
   _logout() {
     submitLogout();
     Navigator.pushAndRemoveUntil(
@@ -34,6 +37,18 @@ class HomeState extends State<Home> {
           );
         }),
         (Route route) => false);
+  }
+
+  getCurrentUser() {
+    var response = getCurrentUserFromDb();
+    print(response);
+    currentUserData = response;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getCurrentUser();
   }
 
   @override
