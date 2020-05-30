@@ -52,9 +52,9 @@ router.post("/createuser", (req, res) => {
       .then((res) => {
         let user = firebase.auth().currentUser;
         //avatar
-        const storageRef = firebase.storage().ref(user + "/avatar");
+        const storageRef = firebase.storage().ref(user.uid + "/avatar");
         storageRef
-          .putString(avatar.substring(23), "base64")
+          .put(Buffer.from(avatar,'base64'))
           .then(() => {
             console.log("Avatar uploaded!");
           })
@@ -63,7 +63,7 @@ router.post("/createuser", (req, res) => {
             res.send(e);
           });
         //user profile
-        const profile = { displayName: username, photoUrl: avatar };
+        const profile = { displayName: username, photoUrl: storageRef.child(user.uid + '/avatar') };
         user.updateProfile(profile);
         //email verification
         user

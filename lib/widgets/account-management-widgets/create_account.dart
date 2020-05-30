@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +25,15 @@ class CreateAccountState extends State<CreateAccount> {
   var imageForDisplay;
   Future _selectUserAvatar() async {
     var image = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-    );
+        source: ImageSource.gallery,
+        imageQuality: 10,
+        maxWidth: 400,
+        maxHeight: 400);
     imageForDisplay = image;
-    List<int> imageBytes = image.readAsBytesSync();
-    print(imageBytes);
-    var base64Image = base64Encode(imageBytes);
+    // List<int> imageBytes = image.readAsBytesSync();
+    // var base64Image = base64Encode(imageBytes);
+    // print(base64Image);
+    String base64Image = base64Encode(image.readAsBytesSync());
     setState(() {
       _image = base64Image;
     });
