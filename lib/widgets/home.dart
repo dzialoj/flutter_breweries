@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:beer/services/http_service.dart';
 import 'package:flutter/material.dart';
 //import 'package:loading/indicator/ball_pulse_indicator.dart';
@@ -14,7 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-
   var currentUserData;
 
   _logout() {
@@ -39,16 +40,17 @@ class HomeState extends State<Home> {
         (Route route) => false);
   }
 
-  getCurrentUser() {
-    var response = getCurrentUserFromDb();
-    print(response);
-    currentUserData = response;
+  getCurrentUser() async{
+    var response = await getCurrentUserFromDb();
+    var decodedResponse = json.decode(response.body);
+    currentUserData = decodedResponse;
+    print(currentUserData);
   }
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     getCurrentUser();
+    super.didChangeDependencies();
   }
 
   @override
@@ -83,7 +85,7 @@ class HomeState extends State<Home> {
                           shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(25.0),
                           ),
-                          onPressed: () => {print('Go to profile')},
+                          onPressed: () => {getCurrentUser()},
                         ),
                       ),
                       Padding(
@@ -109,8 +111,15 @@ class HomeState extends State<Home> {
             },
             child: Padding(
               padding: EdgeInsets.all(7.0),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+              child: Row(
+                children: [
+                  Text(currentUserData['username'] != null ? currentUserData['username'] : ''),
+                  CircleAvatar(
+                    backgroundImage: currentUserData['avatar'] != null
+                        ? NetworkImage(currentUserData['avatar'])
+                        : NetworkImage('https://i.pravatar.cc/300'),
+                  ),
+                ],
               ),
             ),
           ),

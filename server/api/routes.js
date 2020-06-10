@@ -17,6 +17,7 @@ router.post("/login", (req, res, next) => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((response) => {
+          refreshAvatar();
           res.status(201).send(response);
         })
         .catch((error) => {
@@ -30,12 +31,29 @@ router.post("/login", (req, res, next) => {
   }
 });
 
-router.get("/logout", (req, res) => {
+refreshAvatar  = async () => {
+  const user = firebase.auth().currentUser;
+  const storageRef = firebase.storage().ref(user.uid + "/avatar");
   try {
-    firebase.auth().signOut();
-  } catch {
-    res.status(404).send("No account found to logout.");
+    const profilePicture = await storageRef.getDownloadURL();
+    console.log(user);
+    // Create user object
+    let userProfile = {
+      username: user.displayName,
+      avatar: profilePicture,
+    };
+    user.updateProfile(userProfile);
+  } catch (e) {
+    res.send(e);
   }
+}
+
+router.get("/logout", (req, res) => {
+  firebase.auth().signOut().then((response) => {
+    res.send(response);
+  }).catch((e) => {
+    res.send(e);
+  });
 });
 
 router.post("/createuser", (req, res) => {
@@ -44,29 +62,32 @@ router.post("/createuser", (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
+  let downloadURL = '';
+  var user = null;
 
   try {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
-        let user = firebase.auth().currentUser;
+        user = firebase.auth().currentUser;
         //avatar
         const storageRef = firebase.storage().ref(user.uid + "/avatar");
         storageRef
-          .put(Buffer.from(avatar,'base64'))
+          .put(Buffer.from(avatar, "base64"))
           .then((snapshot) => {
             console.log("Avatar uploaded!");
-            user.updateProfile({photoURL: snapshot.downloadURL});
+            downloadURL = snapshot.downloadURL;
           })
           .catch((e) => {
             console.log(e);
             res.send(e);
           });
+        
         //user profile
-       // const profile = { displayName: username, photoUrl: storageRef.getDownloadURL() };
-       // user.updateProfile(profile);
-       user.updateProfile({displayName: username});
+        // const profile = { displayName: username, photoUrl: storageRef.getDownloadURL() };
+        // user.updateProfile(profile);
+        user.updateProfile({ displayName: username, photoURL: downloadURL });
         //email verification
         user
           .sendEmailVerification()
@@ -87,6 +108,25 @@ router.post("/createuser", (req, res) => {
     res.send("Unable to create account. Please try again.");
   }
 });
+
+router.get("/currentUser", async (req, res) => {
+  const user = firebase.auth().currentUser;
+  const storageRef = firebase.storage().ref(user.uid + "/avatar");
+  try {
+    const profilePicture = await storageRef.getDownloadURL();
+    console.log(profilePicture);
+    // Create user object
+    let userProfile = {
+      username: user.displayName,
+      avatar: profilePicture,
+    };
+    console.log(userProfile);
+    res.send(userProfile);
+  } catch (e) {
+    res.send(e);
+  }
+});
+
 
 //MapBox
 // router.get('/breweries', (req, res) => {

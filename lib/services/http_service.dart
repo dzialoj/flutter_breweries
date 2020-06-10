@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 //192.160.1.6
 Future<dynamic> submitLogin(username, password) async {
   try {
-    var uri = Uri.http('192.168.1.6:3000', '/api/login');
+    var uri = Uri.http('192.168.1.83:3000', '/api/login');
     Map<String, String> headers = {"Content-type": "application/json"};
     String data = '{"username": "$username", "password": "$password"}';
     return await http.post(uri, headers: headers, body: data);
@@ -13,10 +13,10 @@ Future<dynamic> submitLogin(username, password) async {
     print(error);
   }
 }
-
+//Somethings wrong here
 Future submitLogout() async {
   try {
-    var uri = Uri.http('192.168.1.6:3000', '/api/logout');
+    var uri = Uri.http('192.168.1.83:3000', '/api/logout');
     var response = await http.get(uri);
     print(response.body);
     return response;
@@ -27,7 +27,7 @@ Future submitLogout() async {
 
 Future createAccount(userData) async {
   try {
-    var uri = Uri.http('192.168.1.6:3000', '/api/createuser');
+    var uri = Uri.http('192.168.1.83:3000', '/api/createuser');
     Map<String, String> headers = {"Content-Type": "application/json"};
     String data =
         '{"username": "${userData["username"]}","avatar": "${userData["avatar"]}", "email": "${userData["email"]}", "password": "${userData["password"]}"}';
@@ -39,7 +39,7 @@ Future createAccount(userData) async {
 
 Future getCurrentUserFromDb() async {
   try {
-    var uri = Uri.http('192.168.1.6:3000', '/api/currentUser');
+    var uri = Uri.http('192.168.1.83:3000', '/api/currentUser');
     return await http.get(uri);
   } catch(e) {
     print(e);

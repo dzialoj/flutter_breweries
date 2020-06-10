@@ -64,12 +64,13 @@ class LoginState extends State<Login> {
           );
           return;
         }
-        print(response.body);
         Navigator.pushAndRemoveUntil(
             context,
             PageRouteBuilder(pageBuilder: (BuildContext context,
                 Animation animation, Animation secondaryAnimation) {
-              return Home(title: 'Home');
+              return Home(
+                title: 'Home',
+              );
             }, transitionsBuilder: (BuildContext context,
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
