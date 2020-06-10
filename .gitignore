@@ -10,7 +10,7 @@
 .svn/
 .env*
 /server/node_modules
-/server/firebase
+/server/firebase/config.js
 # IntelliJ related
 *.iml
 *.ipr
