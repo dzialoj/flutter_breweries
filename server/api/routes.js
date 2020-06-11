@@ -3,6 +3,8 @@ const router = express.Router();
 const firebase = require("../firebase/config");
 const axios = require("axios");
 
+const db = firebase.database();
+
 router.get("/ping", (req, res) => {
   res.send("ping");
 });
@@ -31,7 +33,7 @@ router.post("/login", (req, res, next) => {
   }
 });
 
-refreshAvatar  = async () => {
+refreshAvatar = async () => {
   const user = firebase.auth().currentUser;
   const storageRef = firebase.storage().ref(user.uid + "/avatar");
   try {
@@ -46,14 +48,18 @@ refreshAvatar  = async () => {
   } catch (e) {
     res.send(e);
   }
-}
+};
 
 router.get("/logout", (req, res) => {
-  firebase.auth().signOut().then((response) => {
-    res.send(response);
-  }).catch((e) => {
-    res.send(e);
-  });
+  firebase
+    .auth()
+    .signOut()
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((e) => {
+      res.send(e);
+    });
 });
 
 router.post("/createuser", (req, res) => {
@@ -61,7 +67,7 @@ router.post("/createuser", (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  let downloadURL = '';
+  let downloadURL = "";
   var user = null;
 
   try {
@@ -82,7 +88,7 @@ router.post("/createuser", (req, res) => {
             console.log(e);
             res.send(e);
           });
-        
+
         //user profile
         // const profile = { displayName: username, photoUrl: storageRef.getDownloadURL() };
         // user.updateProfile(profile);
@@ -126,6 +132,31 @@ router.get("/currentUser", async (req, res) => {
   }
 });
 
+// Posts
+//TODO: GET
+router.post("/createpost", (req, res) => {
+  const uid = req.body.uid;
+  const title = req.body.title;
+  const description = req.body.description;
+  const latitude = req.body.lat;
+  const longitude = req.body.long;
+  const createdOn = req.body.createdOn;
+  // For post image, store downloadURL from firebase storage
+  //const imageUrl = storageRef.getDownloadURL();
+
+  const postRef = db.ref("posts").child(uid).child("posts");
+  postRef.set({
+    userId: uid,
+    title: title,
+    description: description,
+    latitude: latitude,
+    longitude: longitude,
+    createdOn: createdOn
+    //imageUrl: imageUrl
+  });
+  res.send("uploaded");
+});
+//TODO: POST
 
 //MapBox
 // router.get('/breweries', (req, res) => {

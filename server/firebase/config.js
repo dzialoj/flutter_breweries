@@ -1,6 +1,7 @@
 require('dotenv').config();
 const firebase = require('firebase');
 require('firebase/storage');
+require('firebase/database');
 const XMLHttpRequest = require("xhr2");
 global.XMLHttpRequest = XMLHttpRequest
 

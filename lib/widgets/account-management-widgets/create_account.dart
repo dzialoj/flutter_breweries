@@ -195,6 +195,12 @@ class CreateAccountState extends State<CreateAccount> {
                       onSaved: (val) {
                         _password = val;
                       },
+                      validator: (val) {
+                        if (val != _verifyPass) {
+                          return 'Password do not match.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
                 ],
