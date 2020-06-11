@@ -57,7 +57,6 @@ router.get("/logout", (req, res) => {
 });
 
 router.post("/createuser", (req, res) => {
-  console.log(req.body);
   const avatar = req.body.avatar;
   const username = req.body.username;
   const email = req.body.email;

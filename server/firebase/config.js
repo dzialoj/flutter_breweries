@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '.env' });
+require('dotenv').config();
 const firebase = require('firebase');
 require('firebase/storage');
 const XMLHttpRequest = require("xhr2");

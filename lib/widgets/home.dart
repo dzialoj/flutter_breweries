@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:beer/widgets/navigation.dart';
 import 'package:beer/widgets/login.dart';
 import 'package:beer/widgets/colors/colors.dart';
+import 'package:loading/loading.dart';
 
 class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
@@ -17,6 +18,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   var currentUserData;
+  bool loading = false;
 
   _logout() {
     submitLogout();
@@ -40,17 +42,26 @@ class HomeState extends State<Home> {
         (Route route) => false);
   }
 
-  getCurrentUser() async{
-    var response = await getCurrentUserFromDb();
-    var decodedResponse = json.decode(response.body);
-    currentUserData = decodedResponse;
-    print(currentUserData);
+  getCurrentUser() async {
+    loading = true;
+    try {
+      var response = await getCurrentUserFromDb();
+      var decodedResponse = json.decode(response.body);
+      setState(() {
+        currentUserData = decodedResponse;
+      });
+      print(currentUserData);
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
+    }
   }
 
   @override
   void didChangeDependencies() {
-    getCurrentUser();
     super.didChangeDependencies();
+    getCurrentUser();
   }
 
   @override
@@ -109,19 +120,26 @@ class HomeState extends State<Home> {
                 ),
               );
             },
-            child: Padding(
-              padding: EdgeInsets.all(7.0),
-              child: Row(
-                children: [
-                  Text(currentUserData['username'] != null ? currentUserData['username'] : ''),
-                  CircleAvatar(
-                    backgroundImage: currentUserData['avatar'] != null
-                        ? NetworkImage(currentUserData['avatar'])
-                        : NetworkImage('https://i.pravatar.cc/300'),
-                  ),
-                ],
-              ),
-            ),
+            child: loading == false
+                ? Padding(
+                    padding: EdgeInsets.all(7.0),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(currentUserData['username'] != null
+                              ? currentUserData['username']
+                              : ''),
+                        ),
+                        CircleAvatar(
+                          backgroundImage: currentUserData['avatar'] != null
+                              ? NetworkImage(currentUserData['avatar'])
+                              : NetworkImage('https://i.pravatar.cc/300'),
+                        ),
+                      ],
+                    ),
+                  )
+                : Loading(color: appColor, size: 30),
           ),
         ],
       ),
