@@ -1,4 +1,5 @@
 import 'package:beer/widgets/daily.dart';
+import 'package:beer/widgets/post_creation.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/widgets/geolocation.dart';
 import 'dart:math' as math;
@@ -15,7 +16,7 @@ class NavigationBarState extends State<NavigationBar>
 
   var buttonList = [
     {"icon": Icons.map, "view": Geolocation()},
-    {"icon": Icons.photo, "view": null},
+    {"icon": Icons.photo, "view": PostCreation()},
     {"icon": Icons.search, "view": null}
   ];
 
