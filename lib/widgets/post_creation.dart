@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beer/interfaces/Post.dart';
 import 'package:beer/services/http_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,9 +17,25 @@ class PostCreationState extends State<PostCreation> {
   Geolocator geolocator = new Geolocator();
   var userData;
   var currentLatitudeLongitude;
-
-  //TODO: submit
-  _submit() async {}
+  var title;
+  var description;
+  
+  _submit() async {
+    Post newPost = new Post(
+        title,
+        userData['uid'],
+        userData['username'],
+        userData['avatar'],
+        currentLatitudeLongitude.latitude,
+        currentLatitudeLongitude.longitude,
+        description,
+        new DateTime.now());
+    await createNewPost(newPost).then((response) => {
+      print(response.body)
+    }).catchError((e) => {
+      print(e)
+    });
+  }
 
   Future _initUserData() async {
     //lat,long,userdata(pic/username)
@@ -28,7 +45,7 @@ class PostCreationState extends State<PostCreation> {
         userData = json.decode(response.body);
       });
       print(userData);
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
   }
@@ -40,7 +57,7 @@ class PostCreationState extends State<PostCreation> {
       setState(() {
         currentLatitudeLongitude = position;
       });
-    print(currentLatitudeLongitude);
+      print(currentLatitudeLongitude);
     }).catchError((e) {
       print(e);
     });
@@ -78,7 +95,7 @@ class PostCreationState extends State<PostCreation> {
                     hintStyle: TextStyle(color: appColor),
                   ),
                   onChanged: (val) {
-                    return val;
+                    title = val;
                   },
                 ),
               ),
@@ -95,13 +112,18 @@ class PostCreationState extends State<PostCreation> {
                       fillColor: Colors.blue,
                       hintStyle: TextStyle(color: appColor),
                       hintText: 'Description'),
+                  onChanged: (val) {
+                    description = val;
+                  },
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: RaisedButton(
                   color: appColor,
-                  onPressed: () {},
+                  onPressed: () {
+                    _submit();
+                  },
                   child: Text(
                     'Submit',
                     style: TextStyle(color: Colors.white),

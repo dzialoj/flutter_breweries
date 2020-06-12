@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 // So this is a pain in the ass, need to use local ip to connect to locahost for now...
@@ -13,6 +15,7 @@ Future<dynamic> submitLogin(username, password) async {
     print(error);
   }
 }
+
 //Somethings wrong here
 Future submitLogout() async {
   try {
@@ -41,7 +44,17 @@ Future getCurrentUserFromDb() async {
   try {
     var uri = Uri.http('192.168.1.83:3000', '/api/currentUser');
     return await http.get(uri);
-  } catch(e) {
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future createNewPost(post) async {
+  try {
+    var uri = Uri.http('192.168.1.83:3000', '/api/createpost');
+    Map<String, String> headers = {"Content-Type": "application/json"};
+    return await http.post(uri, headers: headers, body: json.encode(post.toJson()));
+  } catch (e) {
     print(e);
   }
 }

@@ -122,6 +122,7 @@ router.get("/currentUser", async (req, res) => {
     console.log(profilePicture);
     // Create user object
     let userProfile = {
+      uid: user.uid,
       username: user.displayName,
       avatar: profilePicture,
     };
@@ -135,11 +136,14 @@ router.get("/currentUser", async (req, res) => {
 // Posts
 //TODO: GET
 router.post("/createpost", (req, res) => {
+  console.log(req.body);
   const uid = req.body.uid;
+  const username = req.body.username;
+  const profileImageUrl = req.body.profileImageUrl;
   const title = req.body.title;
   const description = req.body.description;
-  const latitude = req.body.lat;
-  const longitude = req.body.long;
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
   const createdOn = req.body.createdOn;
   // For post image, store downloadURL from firebase storage
   //const imageUrl = storageRef.getDownloadURL();
@@ -151,7 +155,9 @@ router.post("/createpost", (req, res) => {
     description: description,
     latitude: latitude,
     longitude: longitude,
-    createdOn: createdOn
+    createdOn: createdOn,
+    username: username,
+    profileImageUrl: profileImageUrl
     //imageUrl: imageUrl
   });
   res.send("uploaded");
