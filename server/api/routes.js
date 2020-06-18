@@ -135,8 +135,24 @@ router.get("/currentUser", async (req, res) => {
 
 // Posts
 //TODO: GET
+router.get("/posts", (req, res) => {
+  // Need to use geolocation to find local posts only
+  // Eventually handle followers I guess
+
+  // For now grabbing all posts
+  const data = db
+    .ref("/posts")
+    .once("value")
+    .then((snapshot) => {
+      const posts = snapshot.val();
+      res.send(posts);
+    })
+    .catch((e) => {
+      res.send('Unable to fetch posts, please try again.')
+    });
+});
+
 router.post("/createpost", (req, res) => {
-  console.log(req.body);
   const uid = req.body.uid;
   const username = req.body.username;
   const profileImageUrl = req.body.profileImageUrl;
@@ -147,8 +163,8 @@ router.post("/createpost", (req, res) => {
   const createdOn = req.body.createdOn;
   // For post image, store downloadURL from firebase storage
   //const imageUrl = storageRef.getDownloadURL();
-
-  const postRef = db.ref("posts").child(uid).child("posts");
+  const postListRef = db.ref("posts");
+  const postRef = postListRef.push();
   postRef.set({
     userId: uid,
     title: title,
@@ -157,7 +173,7 @@ router.post("/createpost", (req, res) => {
     longitude: longitude,
     createdOn: createdOn,
     username: username,
-    profileImageUrl: profileImageUrl
+    profileImageUrl: profileImageUrl,
     //imageUrl: imageUrl
   });
   res.send("uploaded");

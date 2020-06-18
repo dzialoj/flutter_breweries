@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/interfaces/Post.dart';
+import 'package:beer/services/http_service.dart';
 
 class Daily extends StatefulWidget {
   Daily({Key key}) : super(key: key);
@@ -33,10 +36,15 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
 
 //could be generated off followers and random users in the area.
 //only local posts / follower posts
-  _generateFeedCards() {
+  _generateFeedCards() async {
     List<Widget> cards = [];
+    Map<String,dynamic> posts = {};
 
-    for (var i = 0; i < 10; i++) {
+    var response = await getAllPosts();
+    var decodedResponse = json.decode(response.body);
+    posts = decodedResponse;
+
+    for (var i = 0; i < posts.length; i++) {
       var newCard = Padding(
         padding: EdgeInsets.all(10.0),
         child: Card(

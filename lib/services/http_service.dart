@@ -59,6 +59,15 @@ Future createNewPost(post) async {
   }
 }
 
+Future getAllPosts() async {
+  try {
+    var uri = Uri.http('192.168.1.83:3000', '/api/posts');
+    return await http.get(uri);
+  } catch(e) {
+    print(e);
+  }
+}
+
 // Future fetchLocalBreweries(city,state) async {
 //   try {
 //     var uri = Uri.http('192.168.1.83:3000', '/api/breweries');
