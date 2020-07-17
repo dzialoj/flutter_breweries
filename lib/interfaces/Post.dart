@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:beer/services/firebase_database_service.dart';
 import 'package:http/http.dart' as http;
 
 class Post {
@@ -59,14 +60,7 @@ class Post {
 
   static Future<List<Post>> get() async {
     try {
-      var uri = Uri.http('192.168.1.83:3000', '/api/posts');
-      var response = await http.get(uri);
-      final responseJson = json.decode(response.body);
-      // final items =
-      //     responseJson.map((i) => new Post.fromJson(i)).toList();
-      final items = [];
-      print(responseJson[0]);
-      return items;
+      return await getPosts();
     } catch (e) {
       print(e);
       return [];

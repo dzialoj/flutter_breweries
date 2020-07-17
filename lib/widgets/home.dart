@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beer/services/firebase_auth_service.dart';
+import 'package:beer/services/firebase_database_service.dart';
 import 'package:beer/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
 //import 'package:loading/indicator/ball_pulse_indicator.dart';
@@ -91,18 +92,17 @@ class HomeState extends State<Home> {
                       Padding(
                         padding: EdgeInsets.all(8.0),
                         child: RaisedButton(
-                          child: Text(
-                            'Profile',
-                            style: TextStyle(
-                              color: Colors.white,
+                            child: Text(
+                              'Profile',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          color: appColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
-                          ),
-                          onPressed: () => {getCurrentUser()},
-                        ),
+                            color: appColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
+                            onPressed: () => {getPosts()}),
                       ),
                       Padding(
                         padding: EdgeInsets.all(8.0),
