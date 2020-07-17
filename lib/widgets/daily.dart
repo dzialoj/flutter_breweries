@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:beer/interfaces/Post.dart';
-import 'package:beer/services/http_service.dart';
 
 class Daily extends StatefulWidget {
   Daily({Key key}) : super(key: key);
@@ -12,38 +9,33 @@ class Daily extends StatefulWidget {
 }
 
 class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+  List<Widget> cards = [];
+  List<Post> posts = [];
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-    controller =
-        AnimationController(duration: const Duration(seconds: 2), vsync: this);
-    animation = Tween(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(controller);
-
-    controller.forward();
+    getAllCurrentPosts();
   }
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
+  }
+
+  getAllCurrentPosts() async {
+    try {
+      await Post.get().then((response) => posts = response);
+      print(posts);
+      _generateFeedCards();
+    } catch (e) {
+      print(e);
+    }
   }
 
 //could be generated off followers and random users in the area.
 //only local posts / follower posts
-  _generateFeedCards() async {
-    List<Widget> cards = [];
-    Map<String,dynamic> posts = {};
-
-    var response = await getAllPosts();
-    var decodedResponse = json.decode(response.body);
-    posts = decodedResponse;
-
+  _generateFeedCards() {
     for (var i = 0; i < posts.length; i++) {
       var newCard = Padding(
         padding: EdgeInsets.all(10.0),
@@ -112,14 +104,15 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
 
       cards.add(newCard);
     }
-    return cards;
+    setState(() {
+      cards = cards;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    controller.forward();
     return Center(
-      child: ListView(shrinkWrap: true, children: _generateFeedCards()),
+      child: ListView(shrinkWrap: true, children: cards),
     );
   }
 }

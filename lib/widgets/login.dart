@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:beer/services/firebase_auth_service.dart';
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:beer/widgets/home.dart';
 import 'package:flutter/material.dart';
@@ -17,79 +18,69 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  // TODO: submit
-
   bool loading = false;
-  _login(username, password) async {
-    loading = true;
+
+  void signIn(email, password) async {
+    //for validation
+    setState(() {
+      loading = true;
+    });
     try {
-      var response = await submitLogin(username, password);
-      if (response.statusCode != 201) {
-        //snackbar
-        print(response);
+      var response = await signInEmailPassword(email, password);
+      print(response);
+      if (response == null) {
         showDialog(
-            context: context,
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              backgroundColor: appColor,
-              content: Text(response.body,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ));
-      } else {
-        var jsonResponse = json.decode(response.body);
-        var isEmailVerified = jsonResponse["user"]["emailVerified"];
-        if (isEmailVerified == false) {
-          showDialog(
-            context: context,
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              backgroundColor: appColor,
-              content: Text(
-                'Please verify your email address.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+          context: context,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            backgroundColor: appColor,
+            content: Text(
+              'Invalid credentials, please try again.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          );
-          return;
-        }
+          ),
+        );
+        return;
+      } else if (response == 'Please verify your email address.') {
+        showDialog(
+          context: context,
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            backgroundColor: appColor,
+            content: Text(
+              'Please verify your email address.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        );
+        return;
+      } else {
         Navigator.pushAndRemoveUntil(
             context,
-            PageRouteBuilder(pageBuilder: (BuildContext context,
-                Animation animation, Animation secondaryAnimation) {
-              return Home(
-                title: 'Home',
-              );
-            }, transitionsBuilder: (BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child) {
-              return new SlideTransition(
-                position: new Tween<Offset>(
-                  begin: const Offset(0.0, 1.0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              );
-            }),
-            (Route route) => false);
+            MaterialPageRoute(
+                builder: (BuildContext context) => Home(
+                      title: 'Home',
+                    )),
+            (route) => false);
       }
-    } catch (error) {
-      //snackbar/dialog service
-      print(error);
+    } catch (e) {
+      print(e);
     } finally {
-      loading = false;
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -285,7 +276,7 @@ class LoginState extends State<Login> {
                             shape: new RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(30.0),
                             ),
-                            onPressed: () => {_login(_email, _password)},
+                            onPressed: () => {signIn(_email, _password)},
                             child: new Container(
                               padding: const EdgeInsets.symmetric(
                                 vertical: 20.0,

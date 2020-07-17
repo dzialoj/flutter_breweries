@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beer/interfaces/Post.dart';
+import 'package:beer/services/firebase_auth_service.dart';
 import 'package:beer/services/http_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,7 +20,7 @@ class PostCreationState extends State<PostCreation> {
   var currentLatitudeLongitude;
   var title;
   var description;
-  
+
   _submit() async {
     Post newPost = new Post(
         title,
@@ -30,17 +31,15 @@ class PostCreationState extends State<PostCreation> {
         currentLatitudeLongitude.longitude,
         description,
         new DateTime.now());
-    await createNewPost(newPost).then((response) => {
-      print(response.body)
-    }).catchError((e) => {
-      print(e)
-    });
+    await createNewPost(newPost)
+        .then((response) => {print(response.body)})
+        .catchError((e) => {print(e)});
   }
 
   Future _initUserData() async {
     //lat,long,userdata(pic/username)
     try {
-      var response = await getCurrentUserFromDb();
+      var response = await getCurrentUserFirebaseUser();
       setState(() {
         userData = json.decode(response.body);
       });

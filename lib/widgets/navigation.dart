@@ -13,7 +13,8 @@ class NavigationBar extends StatefulWidget {
 class NavigationBarState extends State<NavigationBar>
     with TickerProviderStateMixin {
   AnimationController _controller;
-
+  AnimationController transitionController;
+  RelativeRectTween rectAnimation;
   var buttonList = [
     {"icon": Icons.map, "view": Geolocation()},
     {"icon": Icons.photo, "view": PostCreation()},
@@ -22,11 +23,26 @@ class NavigationBarState extends State<NavigationBar>
 
   @override
   void initState() {
-    super.initState();
     _controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    transitionController = new AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    rectAnimation = RelativeRectTween(
+      begin: RelativeRect.fromSize(Rect.fromLTWH(0, 0, 0, 0), Size(400, 400)),
+      end: RelativeRect.fromSize(Rect.fromLTWH(0, 0, 0, 0), Size(400, 400)),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    transitionController.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,8 +68,10 @@ class NavigationBarState extends State<NavigationBar>
                 heroTag: null,
                 backgroundColor: backgroundColor,
                 mini: true,
-                child:
-                    new Icon(buttonList[index]["icon"], color: foregroundColor),
+                child: new Icon(
+                  buttonList[index]["icon"],
+                  color: foregroundColor,
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:beer/services/http_service.dart';
+import 'package:beer/services/firebase_auth_service.dart';
+import 'package:beer/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
 //import 'package:loading/indicator/ball_pulse_indicator.dart';
 //import 'package:loading/loading.dart';
@@ -17,11 +18,11 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  var currentUserData;
+  Map<String, String> currentUserData = {'username': '', 'photoUrl': ''};
   bool loading = false;
 
   _logout() {
-    submitLogout();
+    signOut();
     Navigator.pushAndRemoveUntil(
         context,
         PageRouteBuilder(pageBuilder: (BuildContext context,
@@ -43,18 +44,22 @@ class HomeState extends State<Home> {
   }
 
   getCurrentUser() async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
     try {
-      var response = await getCurrentUserFromDb();
-      var decodedResponse = json.decode(response.body);
+      var response = await getCurrentUserFirebaseUser();
+      var avatar = await getUserProfilePicture(response.uid);
       setState(() {
-        currentUserData = decodedResponse;
+        currentUserData['username'] = response.displayName;
+        currentUserData['avatar'] = avatar;
       });
-      print(currentUserData);
     } catch (e) {
       print(e);
     } finally {
-      loading = false;
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -127,9 +132,9 @@ class HomeState extends State<Home> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(right: 10),
-                          child: Text(currentUserData['username'] != null
-                              ? currentUserData['username']
-                              : ''),
+                          child: currentUserData['username'] != null
+                              ? Text(currentUserData['username'])
+                              : Text('username'),
                         ),
                         CircleAvatar(
                           backgroundImage: currentUserData['avatar'] != null

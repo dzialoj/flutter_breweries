@@ -41,19 +41,35 @@ class Post {
     );
   }
 
-  Map<String,dynamic> toJson() => {
-    "uid": uid,
-    "username": username,
-    "profileImageUrl": profileImageUrl,
-    "latitude": latitude,
-    "longitude": longitude,
-    "title": title,
-    "description": description,
-    "createdOn": createdOn.toString()
-  };
+  Map<String, dynamic> toJson() => {
+        "uid": uid,
+        "username": username,
+        "profileImageUrl": profileImageUrl,
+        "latitude": latitude,
+        "longitude": longitude,
+        "title": title,
+        "description": description,
+        "createdOn": createdOn.toString()
+      };
 
-  static Future<List<Post>> get(String lat, String long) async {
-    //TODO: get posts based on user location
-    return null;
+  // static Future<List<Post>> get(String lat, String long) async {
+  //   //TODO: get posts based on user location
+  //   return null;
+  // }
+
+  static Future<List<Post>> get() async {
+    try {
+      var uri = Uri.http('192.168.1.83:3000', '/api/posts');
+      var response = await http.get(uri);
+      final responseJson = json.decode(response.body);
+      // final items =
+      //     responseJson.map((i) => new Post.fromJson(i)).toList();
+      final items = [];
+      print(responseJson[0]);
+      return items;
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 }

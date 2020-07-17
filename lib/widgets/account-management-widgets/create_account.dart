@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-
+import 'package:beer/services/firebase_auth_service.dart';
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:beer/services/http_service.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -51,7 +49,7 @@ class CreateAccountState extends State<CreateAccount> {
       "email": _email,
       "avatar": _image,
     };
-    createAccount(formData)
+    createUserEmailPassword(formData)
         .then((res) => {print(res.body)})
         .catchError((e) => {print(e)});
   }
