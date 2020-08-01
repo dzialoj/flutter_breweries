@@ -12,7 +12,17 @@ Future<List<Post>> getPosts() async {
       .then((DataSnapshot snapshot) {
     Map<dynamic, dynamic> map = snapshot.value;
     map.values.toList().forEach((snapshot) {
-      allPosts.add(snapshot);
+      Post newPost = new Post(
+        snapshot['title'],
+        snapshot['uid'],
+        snapshot['username'],
+        snapshot['profileImageUrl'],
+        snapshot['latitude'],
+        snapshot['longitude'],
+        snapshot['description'],
+        DateTime.parse(snapshot['createdOn']),
+      );
+      allPosts.add(newPost);
     });
   });
   return allPosts;

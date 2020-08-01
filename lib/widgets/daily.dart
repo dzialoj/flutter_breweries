@@ -25,9 +25,8 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
 
   getAllCurrentPosts() async {
     try {
-      await Post.get().then((response) => posts = response);
-      print(posts);
-      _generateFeedCards();
+      posts = await Post.get();
+      await _generateFeedCards();
     } catch (e) {
       print(e);
     }
@@ -54,15 +53,14 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
                     padding: EdgeInsets.all(10.0),
                     alignment: Alignment.topLeft,
                     child: CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('https://i.pravatar.cc/300'),
+                      backgroundImage: NetworkImage(posts[i].profileImageUrl),
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10.0),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Username2020',
+                      posts[i].username,
                       style: TextStyle(
                         color: Colors.white,
                       ),

@@ -59,8 +59,10 @@ class Post {
   // }
 
   static Future<List<Post>> get() async {
+    List<Post> posts = [];
     try {
-      return await getPosts();
+      posts = await getPosts();
+      return posts;
     } catch (e) {
       print(e);
       return [];
