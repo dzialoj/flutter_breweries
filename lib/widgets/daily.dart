@@ -25,8 +25,11 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
 
   getAllCurrentPosts() async {
     try {
-      posts = await Post.get();
-      await _generateFeedCards();
+      var response = await Post.get();
+      setState(() {
+        posts = response;
+      });
+      _generateFeedCards();
     } catch (e) {
       print(e);
     }
@@ -35,6 +38,7 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
 //could be generated off followers and random users in the area.
 //only local posts / follower posts
   _generateFeedCards() {
+    List<Widget> newCards = [];
     for (var i = 0; i < posts.length; i++) {
       var newCard = Padding(
         padding: EdgeInsets.all(10.0),
@@ -100,10 +104,10 @@ class DailyState extends State<Daily> with SingleTickerProviderStateMixin {
         ),
       );
 
-      cards.add(newCard);
+      newCards.add(newCard);
     }
     setState(() {
-      cards = cards;
+      cards = newCards;
     });
   }
 

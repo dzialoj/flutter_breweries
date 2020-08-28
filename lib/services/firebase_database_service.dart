@@ -27,3 +27,21 @@ Future<List<Post>> getPosts() async {
   });
   return allPosts;
 }
+
+Future<void> createPost(post) async {
+  try {
+    var postRef = database.reference().child('posts').push();
+    await postRef.set({
+      'title': post.title,
+      'userId': post.uid,
+      'latitude': post.latitude,
+      'longitude': post.longitude,
+      'description': post.description,
+      'createdOn': post.createdOn.toString(),
+      'username': post.username,
+      'profileImageUrl': post.profileImageUrl,
+    });
+  } catch (e) {
+    print(e);
+  }
+}
