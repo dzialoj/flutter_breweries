@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:beer/widgets/map.dart';
 import 'package:loading/loading.dart';
-import 'package:beer/interfaces/Brewery.dart';
+import 'package:beer/models/Brewery.dart';
 
 class Geolocation extends StatefulWidget {
   Geolocation({Key key}) : super(key: key);

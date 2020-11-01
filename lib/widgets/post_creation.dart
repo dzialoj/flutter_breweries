@@ -1,10 +1,10 @@
-import 'package:beer/interfaces/Post.dart';
+import 'package:beer/models/Post.dart';
 import 'package:beer/services/firebase_auth_service.dart';
 import 'package:beer/services/firebase_storage_service.dart';
 import 'package:beer/services/firebase_database_service.dart';
+import 'package:beer/widgets/camera_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'colors/colors.dart';
 
 class PostCreation extends StatefulWidget {
@@ -63,6 +63,21 @@ class PostCreationState extends State<PostCreation> {
     });
   }
 
+  void openCamera() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => CameraModal(
+          imageCallback: setImage,
+        ),
+      ),
+    );
+  }
+
+  void setImage() {
+    print('set');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -117,6 +132,13 @@ class PostCreationState extends State<PostCreation> {
                   },
                 ),
               ),
+              Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: RaisedButton(
+                    onPressed: openCamera,
+                    child: Icon(Icons.camera_alt_outlined),
+                    color: appColor,
+                  )),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: RaisedButton(

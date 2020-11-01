@@ -1,6 +1,6 @@
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:beer/interfaces/Post.dart';
+import 'package:beer/models/Post.dart';
 
 class Daily extends StatefulWidget {
   Daily({Key key}) : super(key: key);

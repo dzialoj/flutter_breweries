@@ -1,4 +1,4 @@
-import 'package:beer/interfaces/Brewery.dart';
+import 'package:beer/models/Brewery.dart';
 import 'package:beer/widgets/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

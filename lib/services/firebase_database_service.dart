@@ -1,4 +1,4 @@
-import 'package:beer/interfaces/Post.dart';
+import 'package:beer/models/Post.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 FirebaseDatabase database = FirebaseDatabase.instance;
